@@ -10,6 +10,7 @@ jobs:
   build:
     env:
       working-directory: ./Vertice/Vertice/
+      working-test-directory: ./Vertice/D20Tests/
 
     runs-on: ubuntu-latest
 
@@ -19,12 +20,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: Install dependencies
+    - name: Install dependencies Vertice
       run: dotnet restore
       working-directory: ${{env.working-directory}}
-    - name: Build
+    - name: Install dependencies Test
+      run: dotnet restore
+      working-directory: ${{env.working-test-directory}}
+    - name: Build Vertice
       run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnaserror
       working-directory: ${{env.working-directory}}
+    - name: Build Tests
+      run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnaserror
+      working-directory: ${{env.working-test-directory}}
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-      working-directory: ${{env.working-directory}}
+      working-directory: ${{env.working-test-directory}}

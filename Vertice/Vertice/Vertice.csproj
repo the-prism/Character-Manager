@@ -44,4 +44,8 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\D20Library\D20Library.csproj" />
+  </ItemGroup>
+
 </Project>
