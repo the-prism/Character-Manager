@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore
       working-directory: ${{env.working-directory}}
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore /p:TreatWarningsAsErrors=true /warnaserror
       working-directory: ${{env.working-directory}}
     - name: Test
       run: dotnet test --no-restore --verbosity normal
