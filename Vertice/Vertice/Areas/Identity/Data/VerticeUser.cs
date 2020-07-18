@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="VerticeUser.cs" company="Thomas Castonguay-Gagnon">
+// Copyright (c) Thomas Castonguay-Gagnon. All rights reserved.
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -7,7 +12,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Vertice.Areas.Identity.Data
 {
-    // Add profile data for application users by adding properties to the VerticeUser class
+    /// <summary>
+    /// Add profile data for application users by adding properties to the VerticeUser class
+    /// </summary>
     public class VerticeUser : IdentityUser
     {
         [PersonalData]

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="DeletePersonalData.cshtml.cs" company="Thomas Castonguay-Gagnon">
+// Copyright (c) Thomas Castonguay-Gagnon. All rights reserved.
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
@@ -27,13 +32,6 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-        }
 
         public bool RequirePassword { get; set; }
 
@@ -79,6 +77,13 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 
             return Redirect("~/");
+        }
+
+        public class InputModel
+        {
+            [Required]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
         }
     }
 }

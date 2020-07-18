@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="Index.cshtml.cs" company="Thomas Castonguay-Gagnon">
+// Copyright (c) Thomas Castonguay-Gagnon. All rights reserved.
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +15,9 @@ using Vertice.Areas.Identity.Data;
 
 namespace Vertice.Areas.Identity.Pages.Account.Manage
 {
+    /// <summary>
+    /// Account management index.
+    /// </summary>
     public partial class IndexModel : PageModel
     {
         private readonly UserManager<VerticeUser> _userManager;
@@ -30,26 +38,6 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public InputModel Input { get; set; }
-
-        public class InputModel
-        {
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
-        }
-
-        private async Task LoadAsync(VerticeUser user)
-        {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
-            Input = new InputModel
-            {
-                PhoneNumber = phoneNumber
-            };
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -91,6 +79,26 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
+        }
+
+        private async Task LoadAsync(VerticeUser user)
+        {
+            var userName = await _userManager.GetUserNameAsync(user);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            Username = userName;
+
+            Input = new InputModel
+            {
+                PhoneNumber = phoneNumber,
+            };
+        }
+
+        public class InputModel
+        {
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
         }
     }
 }

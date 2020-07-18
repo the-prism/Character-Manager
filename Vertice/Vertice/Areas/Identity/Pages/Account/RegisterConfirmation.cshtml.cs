@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿// <copyright file="RegisterConfirmation.cshtml.cs" company="Thomas Castonguay-Gagnon">
+// Copyright (c) Thomas Castonguay-Gagnon. All rights reserved.
+// Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
+// </copyright>
+
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +47,7 @@ namespace Vertice.Areas.Identity.Pages.Account
             }
 
             Email = email;
+
             // Once you add a real email sender, you should remove this code that lets you confirm the account
             DisplayConfirmAccountLink = true;
             if (DisplayConfirmAccountLink)

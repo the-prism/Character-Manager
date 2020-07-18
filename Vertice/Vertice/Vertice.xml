@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Vertice</name>
+    </assembly>
+    <members>
+        <member name="M:Vertice.AdditionalUserClaimsPrincipalFactory.CreateAsync(Vertice.Areas.Identity.Data.VerticeUser)">
+            <summary>
+            Add user claims on creation.
+            </summary>
+            <param name="user">Created user.</param>
+            <returns>Return the user.</returns>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Data.VerticeUser">
+            <summary>
+            Add profile data for application users by adding properties to the VerticeUser class
+            </summary>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Pages.Account.Manage.EmailModel">
+            <summary>
+            Email page.
+            </summary>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Pages.Account.Manage.IndexModel">
+            <summary>
+            Account management index.
+            </summary>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Pages.Account.RegisterModel">
+            <summary>
+            Registration page.
+            </summary>
+        </member>
+        <member name="M:Vertice.Areas.Identity.Pages.Account.RegisterModel.#ctor(Microsoft.AspNetCore.Identity.UserManager{Vertice.Areas.Identity.Data.VerticeUser},Microsoft.AspNetCore.Identity.SignInManager{Vertice.Areas.Identity.Data.VerticeUser},Microsoft.Extensions.Logging.ILogger{Vertice.Areas.Identity.Pages.Account.RegisterModel},Microsoft.AspNetCore.Identity.UI.Services.IEmailSender)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vertice.Areas.Identity.Pages.Account.RegisterModel"/> class.
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+            <param name="logger"></param>
+            <param name="emailSender"></param>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Pages.Account.ResendEmailConfirmationModel">
+            <summary>
+            Email resend page
+            </summary>
+        </member>
+        <member name="M:Vertice.Areas.Identity.Pages.Account.ResendEmailConfirmationModel.#ctor(Microsoft.AspNetCore.Identity.UserManager{Vertice.Areas.Identity.Data.VerticeUser},Microsoft.AspNetCore.Identity.UI.Services.IEmailSender)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Vertice.Areas.Identity.Pages.Account.ResendEmailConfirmationModel"/> class.
+            </summary>
+            <param name="userManager"></param>
+            <param name="emailSender"></param>
+        </member>
+        <member name="T:Vertice.Areas.Identity.Pages.Account.ResendEmailConfirmationModel.InputModel">
+            <summary>
+            User input model class
+            </summary>
+        </member>
+    </members>
+</doc>
