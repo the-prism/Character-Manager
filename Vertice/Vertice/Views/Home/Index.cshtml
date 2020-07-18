@@ -1,4 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Vertice.Areas.Identity.Data
+@using Vertice.Extensions
+@inject UserManager<VerticeUser> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +11,12 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+@if (User.Identity.GetRole() == "admin")
+{
+    <span>Is an Admin</span>
+}
+else
+{
+    <span>Is a User</span>
+}

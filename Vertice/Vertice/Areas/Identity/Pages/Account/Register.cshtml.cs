@@ -47,8 +47,12 @@ namespace Vertice.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Display Name")]
+            public string DisplayName { get; set; }
+
+            [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Email adress")]
             public string Email { get; set; }
 
             [Required]
@@ -75,7 +79,12 @@ namespace Vertice.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new VerticeUser { UserName = Input.Email, Email = Input.Email };
+                var user = new VerticeUser { UserName = Input.Email, DisplayName = Input.DisplayName };
+                int count = _userManager.Users.Count();
+                if (count == 0)
+                {
+                    user.IsAdmin = true;
+                }
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
