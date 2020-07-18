@@ -3,13 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Vertice-5B4BF5A8-A18E-491E-8F85-4537C3367D5D</UserSecretsId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    
     <DocumentationFile>Vertice.xml</DocumentationFile>
     <NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <Content Remove="stylecop.json" />
   </ItemGroup>
