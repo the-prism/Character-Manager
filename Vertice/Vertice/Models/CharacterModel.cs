@@ -17,6 +17,7 @@ namespace Vertice.Models
         public CharacterModel()
         {
             MainAttributes = new Attributes();
+            Inventory = new InventoryModel();
         }
 
         [Key]
@@ -28,5 +29,7 @@ namespace Vertice.Models
         public string CharacterName { get; set; }
 
         public Attributes MainAttributes { get; set; }
+
+        public InventoryModel Inventory { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Vertice.Migrations
 {
-    public partial class RedoData : Migration
+    public partial class RedoRelations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,22 +50,17 @@ namespace Vertice.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttributeModel",
+                name: "CharacterModel",
                 columns: table => new
                 {
-                    AttributeId = table.Column<int>(nullable: false)
+                    CharacterId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    CharacterId = table.Column<int>(nullable: false),
-                    Strength = table.Column<int>(nullable: false),
-                    Dexterity = table.Column<int>(nullable: false),
-                    Constitution = table.Column<int>(nullable: false),
-                    Intelligence = table.Column<int>(nullable: false),
-                    Wisdom = table.Column<int>(nullable: false),
-                    Charisma = table.Column<int>(nullable: false)
+                    OwnerID = table.Column<string>(nullable: true),
+                    CharacterName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttributeModel", x => x.AttributeId);
+                    table.PrimaryKey("PK_CharacterModel", x => x.CharacterId);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,23 +170,69 @@ namespace Vertice.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterModel",
+                name: "Attributes",
                 columns: table => new
                 {
-                    CharacterId = table.Column<int>(nullable: false)
+                    AttributesId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    OwnerID = table.Column<string>(nullable: true),
-                    CharacterName = table.Column<string>(nullable: true),
-                    MainAttributesAttributeId = table.Column<int>(nullable: true)
+                    Strength = table.Column<int>(nullable: false),
+                    Dexterity = table.Column<int>(nullable: false),
+                    Constitution = table.Column<int>(nullable: false),
+                    Intelligence = table.Column<int>(nullable: false),
+                    Wisdom = table.Column<int>(nullable: false),
+                    Charisma = table.Column<int>(nullable: false),
+                    CharacterId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterModel", x => x.CharacterId);
+                    table.PrimaryKey("PK_Attributes", x => x.AttributesId);
                     table.ForeignKey(
-                        name: "FK_CharacterModel_AttributeModel_MainAttributesAttributeId",
-                        column: x => x.MainAttributesAttributeId,
-                        principalTable: "AttributeModel",
-                        principalColumn: "AttributeId",
+                        name: "FK_Attributes_CharacterModel_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "CharacterModel",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InventoryModel",
+                columns: table => new
+                {
+                    InventoryId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CharacterId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryModel", x => x.InventoryId);
+                    table.ForeignKey(
+                        name: "FK_InventoryModel_CharacterModel_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "CharacterModel",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ItemModel",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Inventory = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Weight = table.Column<double>(nullable: false),
+                    Value = table.Column<int>(nullable: false),
+                    InventoryModelInventoryId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemModel", x => x.ItemId);
+                    table.ForeignKey(
+                        name: "FK_ItemModel_InventoryModel_InventoryModelInventoryId",
+                        column: x => x.InventoryModelInventoryId,
+                        principalTable: "InventoryModel",
+                        principalColumn: "InventoryId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -233,9 +274,21 @@ namespace Vertice.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterModel_MainAttributesAttributeId",
-                table: "CharacterModel",
-                column: "MainAttributesAttributeId");
+                name: "IX_Attributes_CharacterId",
+                table: "Attributes",
+                column: "CharacterId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InventoryModel_CharacterId",
+                table: "InventoryModel",
+                column: "CharacterId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemModel_InventoryModelInventoryId",
+                table: "ItemModel",
+                column: "InventoryModelInventoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -256,7 +309,10 @@ namespace Vertice.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CharacterModel");
+                name: "Attributes");
+
+            migrationBuilder.DropTable(
+                name: "ItemModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -265,7 +321,10 @@ namespace Vertice.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AttributeModel");
+                name: "InventoryModel");
+
+            migrationBuilder.DropTable(
+                name: "CharacterModel");
         }
     }
 }

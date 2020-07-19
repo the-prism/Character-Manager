@@ -25,7 +25,9 @@ namespace Vertice.Data
 
         public DbSet<Vertice.Models.CharacterModel> CharacterModel { get; set; }
 
-        public DbSet<Vertice.Models.Attributes> AttributeModel { get; set; }
+        public DbSet<Vertice.Models.InventoryModel> InventoryModel { get; set; }
+
+        public DbSet<Vertice.Models.ItemModel> ItemModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

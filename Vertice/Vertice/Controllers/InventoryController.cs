@@ -1,4 +1,4 @@
-﻿// <copyright file="CharacterController.cs" company="Thomas Castonguay-Gagnon">
+﻿// <copyright file="InventoryController.cs" company="Thomas Castonguay-Gagnon">
 // Copyright (c) Thomas Castonguay-Gagnon. All rights reserved.
 // Licensed under the GPL3 license. See LICENSE file in the project root for full license information.
 // </copyright>
@@ -15,14 +15,14 @@ using Vertice.Areas.Identity.Data;
 using Vertice.Data;
 using Vertice.Models;
 
-namespace Vertice
+namespace Vertice.Controllers
 {
-    public class CharacterController : Controller
+    public class InventoryController : Controller
     {
         private readonly VerticeContext _context;
         private readonly UserManager<VerticeUser> _userManager;
 
-        public CharacterController(
+        public InventoryController(
             VerticeContext context,
             UserManager<VerticeUser> userManager)
         {
@@ -30,13 +30,19 @@ namespace Vertice
             _userManager = userManager;
         }
 
-        // GET: Character
+        // GET: InventoryModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CharacterModel.ToListAsync());
+            var inventories = await _context.InventoryModel.Include(m => m.Character).Include(n => n.Items).ToListAsync();
+            foreach (var item in inventories)
+            {
+                item.Character = await _context.CharacterModel.FirstOrDefaultAsync(q => q.CharacterId == item.CharacterId);
+            }
+
+            return View(inventories);
         }
 
-        // GET: Character/Details/5
+        // GET: InventoryModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,45 +50,40 @@ namespace Vertice
                 return NotFound();
             }
 
-            var characterModel = await _context.CharacterModel
-                .Include(m => m.MainAttributes)
-                .FirstOrDefaultAsync(m => m.CharacterId == id);
-
-            if (characterModel == null)
+            var inventoryModel = await _context.InventoryModel
+                .FirstOrDefaultAsync(m => m.InventoryId == id);
+            if (inventoryModel == null)
             {
                 return NotFound();
             }
 
-            return View(characterModel);
+            return View(inventoryModel);
         }
 
-        // GET: Character/Create
+        // GET: InventoryModels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Character/Create
+        // POST: InventoryModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CharacterId,CharacterName,MainAttributes")] CharacterModel characterModel)
+        public async Task<IActionResult> Create([Bind("CharacterId,Character")] InventoryModel inventoryModel)
         {
             if (ModelState.IsValid)
             {
-                var verticeUser = await _userManager.GetUserAsync(User);
-                characterModel.OwnerID = await _userManager.GetUserIdAsync(verticeUser);
-
-                _context.Add(characterModel);
+                _context.Add(inventoryModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(characterModel);
+            return View(inventoryModel);
         }
 
-        // GET: Character/Edit/5
+        // GET: InventoryModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,23 +91,23 @@ namespace Vertice
                 return NotFound();
             }
 
-            var characterModel = await _context.CharacterModel.FindAsync(id);
-            if (characterModel == null)
+            var inventoryModel = await _context.InventoryModel.FindAsync(id);
+            if (inventoryModel == null)
             {
                 return NotFound();
             }
 
-            return View(characterModel);
+            return View(inventoryModel);
         }
 
-        // POST: Character/Edit/5
+        // POST: InventoryModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,OwnerID,CharacterName")] CharacterModel characterModel)
+        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,Character")] InventoryModel inventoryModel)
         {
-            if (id != characterModel.CharacterId)
+            if (id != inventoryModel.InventoryId)
             {
                 return NotFound();
             }
@@ -115,12 +116,12 @@ namespace Vertice
             {
                 try
                 {
-                    _context.Update(characterModel);
+                    _context.Update(inventoryModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CharacterModelExists(characterModel.CharacterId))
+                    if (!InventoryModelExists(inventoryModel.InventoryId))
                     {
                         return NotFound();
                     }
@@ -133,10 +134,10 @@ namespace Vertice
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(characterModel);
+            return View(inventoryModel);
         }
 
-        // GET: Character/Delete/5
+        // GET: InventoryModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,31 +145,31 @@ namespace Vertice
                 return NotFound();
             }
 
-            var characterModel = await _context.CharacterModel
-                .FirstOrDefaultAsync(m => m.CharacterId == id);
-            if (characterModel == null)
+            var inventoryModel = await _context.InventoryModel
+                .FirstOrDefaultAsync(m => m.InventoryId == id);
+            if (inventoryModel == null)
             {
                 return NotFound();
             }
 
-            return View(characterModel);
+            return View(inventoryModel);
         }
 
-        // POST: Character/Delete/5
+        // POST: InventoryModels/Delete/5
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var characterModel = await _context.CharacterModel.FindAsync(id);
-            _context.CharacterModel.Remove(characterModel);
+            var inventoryModel = await _context.InventoryModel.FindAsync(id);
+            _context.InventoryModel.Remove(inventoryModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CharacterModelExists(int id)
+        private bool InventoryModelExists(int id)
         {
-            return _context.CharacterModel.Any(e => e.CharacterId == id);
+            return _context.InventoryModel.Any(e => e.InventoryId == id);
         }
     }
 }

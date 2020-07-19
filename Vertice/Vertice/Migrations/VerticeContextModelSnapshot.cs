@@ -216,7 +216,7 @@ namespace Vertice.Migrations
 
             modelBuilder.Entity("Vertice.Models.Attributes", b =>
                 {
-                    b.Property<int>("AttributeId")
+                    b.Property<int>("AttributesId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -241,9 +241,12 @@ namespace Vertice.Migrations
                     b.Property<int>("Wisdom")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("AttributeId");
+                    b.HasKey("AttributesId");
 
-                    b.ToTable("AttributeModel");
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
+
+                    b.ToTable("Attributes");
                 });
 
             modelBuilder.Entity("Vertice.Models.CharacterModel", b =>
@@ -255,17 +258,57 @@ namespace Vertice.Migrations
                     b.Property<string>("CharacterName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("MainAttributesAttributeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("OwnerID")
                         .HasColumnType("TEXT");
 
                     b.HasKey("CharacterId");
 
-                    b.HasIndex("MainAttributesAttributeId");
-
                     b.ToTable("CharacterModel");
+                });
+
+            modelBuilder.Entity("Vertice.Models.InventoryModel", b =>
+                {
+                    b.Property<int>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("InventoryId");
+
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
+
+                    b.ToTable("InventoryModel");
+                });
+
+            modelBuilder.Entity("Vertice.Models.ItemModel", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Inventory")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("InventoryModelInventoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("ItemId");
+
+                    b.HasIndex("InventoryModelInventoryId");
+
+                    b.ToTable("ItemModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -319,11 +362,29 @@ namespace Vertice.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Vertice.Models.CharacterModel", b =>
+            modelBuilder.Entity("Vertice.Models.Attributes", b =>
                 {
-                    b.HasOne("Vertice.Models.Attributes", "MainAttributes")
-                        .WithMany()
-                        .HasForeignKey("MainAttributesAttributeId");
+                    b.HasOne("Vertice.Models.CharacterModel", "CharacterModel")
+                        .WithOne("MainAttributes")
+                        .HasForeignKey("Vertice.Models.Attributes", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vertice.Models.InventoryModel", b =>
+                {
+                    b.HasOne("Vertice.Models.CharacterModel", "Character")
+                        .WithOne("Inventory")
+                        .HasForeignKey("Vertice.Models.InventoryModel", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Vertice.Models.ItemModel", b =>
+                {
+                    b.HasOne("Vertice.Models.InventoryModel", null)
+                        .WithMany("Items")
+                        .HasForeignKey("InventoryModelInventoryId");
                 });
 #pragma warning restore 612, 618
         }
