@@ -1,0 +1,64 @@
+﻿@model Vertice.Models.CharacterModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CharacterModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CharacterName" class="control-label"></label>
+                <input asp-for="CharacterName" class="form-control" />
+                <span asp-validation-for="CharacterName" class="text-danger"></span>
+            </div>
+            <h4>Attributes</h4>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Strength" class="control-label"></label>
+                <input asp-for="MainAttributes.Strength" class="form-control" />
+                <span asp-validation-for="MainAttributes.Strength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Dexterity" class="control-label"></label>
+                <input asp-for="MainAttributes.Dexterity" class="form-control" />
+                <span asp-validation-for="MainAttributes.Dexterity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Constitution" class="control-label"></label>
+                <input asp-for="MainAttributes.Constitution" class="form-control" />
+                <span asp-validation-for="MainAttributes.Constitution" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Intelligence" class="control-label"></label>
+                <input asp-for="MainAttributes.Intelligence" class="form-control" />
+                <span asp-validation-for="MainAttributes.Intelligence" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Wisdom" class="control-label"></label>
+                <input asp-for="MainAttributes.Wisdom" class="form-control" />
+                <span asp-validation-for="MainAttributes.Wisdom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainAttributes.Charisma" class="control-label"></label>
+                <input asp-for="MainAttributes.Charisma" class="form-control" />
+                <span asp-validation-for="MainAttributes.Charisma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

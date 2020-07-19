@@ -1,0 +1,66 @@
+﻿@model Vertice.Models.CharacterModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CharacterModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OwnerID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OwnerID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CharacterName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CharacterName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Strength)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Strength)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Dexterity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Dexterity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Constitution)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Constitution)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Intelligence)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Intelligence)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Wisdom)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Wisdom)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainAttributes.Charisma)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MainAttributes.Charisma)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.CharacterId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

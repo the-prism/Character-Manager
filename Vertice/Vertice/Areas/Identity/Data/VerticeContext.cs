@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Vertice.Areas.Identity.Data;
+using Vertice.Models;
 
 namespace Vertice.Data
 {
@@ -21,6 +22,10 @@ namespace Vertice.Data
             : base(options)
         {
         }
+
+        public DbSet<Vertice.Models.CharacterModel> CharacterModel { get; set; }
+
+        public DbSet<Vertice.Models.Attributes> AttributeModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -12,6 +12,15 @@
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
     <NoWarn>1701;1702;1573;1591;1712</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200719124756_CreateCharacter.cs" />
+    <Compile Remove="Migrations\20200719124756_CreateCharacter.Designer.cs" />
+    <Compile Remove="Migrations\20200719125044_CreateCharacter.cs" />
+    <Compile Remove="Migrations\20200719125044_CreateCharacter.Designer.cs" />
+    <Compile Remove="Migrations\20200719130040_CreateAttributes.cs" />
+    <Compile Remove="Migrations\20200719130040_CreateAttributes.Designer.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <Content Remove="stylecop.json" />
@@ -38,10 +47,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
