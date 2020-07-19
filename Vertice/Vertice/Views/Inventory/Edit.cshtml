@@ -8,15 +8,52 @@
 
 <h4>InventoryModel</h4>
 <hr />
+
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr class="d-flex">
+            <th scope="col" class="col-6">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+            <th scope="col" class="col-1">@Html.DisplayNameFor(model => model.Items[0].Value)</th>
+            <th scope="col" class="col-1">@Html.DisplayNameFor(model => model.Items[0].Weight)</th>
+            <th scope="col" class="col-4"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+        <tr class="d-flex">
+            <td class="col-6">@Html.DisplayFor(modelItem => item.Name)</td>
+            <td class="col-1">@Html.DisplayFor(modelItem => item.Value)</td>
+            <td class="col-1">@Html.DisplayFor(modelItem => item.Weight)</td>
+            <td class="col-4">
+                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="InventoryId" />
             <div class="form-group">
-                <label asp-for="Character" class="control-label"></label>
-                <input asp-for="Character" class="form-control" />
-                <span asp-validation-for="Character" class="text-danger"></span>
+                <label asp-for="ItemToAdd.Name" class="control-label"></label>
+                <input asp-for="ItemToAdd.Name" class="form-control" />
+                <span asp-validation-for="ItemToAdd.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemToAdd.Weight" class="control-label"></label>
+                <input asp-for="ItemToAdd.Weight" class="form-control" />
+                <span asp-validation-for="ItemToAdd.Weight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemToAdd.Value" class="control-label"></label>
+                <input asp-for="ItemToAdd.Value" class="form-control" />
+                <span asp-validation-for="ItemToAdd.Value" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

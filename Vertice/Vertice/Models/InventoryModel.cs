@@ -34,5 +34,8 @@ namespace Vertice.Models
 
         [ForeignKey("CharacterId")]
         public CharacterModel Character { get; set; }
+
+        [NotMapped]
+        public ItemModel ItemToAdd { get; set; }
     }
 }

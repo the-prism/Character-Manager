@@ -51,6 +51,7 @@ namespace Vertice.Controllers
             }
 
             var inventoryModel = await _context.InventoryModel
+                .Include(n => n.Items)
                 .FirstOrDefaultAsync(m => m.InventoryId == id);
             if (inventoryModel == null)
             {
@@ -71,7 +72,7 @@ namespace Vertice.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CharacterId,Character")] InventoryModel inventoryModel)
+        public async Task<IActionResult> Create([Bind("CharacterId,Items")] InventoryModel inventoryModel)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +92,7 @@ namespace Vertice.Controllers
                 return NotFound();
             }
 
-            var inventoryModel = await _context.InventoryModel.FindAsync(id);
+            var inventoryModel = await _context.InventoryModel.Include(n => n.Items).FirstOrDefaultAsync(m => m.InventoryId == id);
             if (inventoryModel == null)
             {
                 return NotFound();
@@ -105,7 +106,7 @@ namespace Vertice.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CharacterId,Character")] InventoryModel inventoryModel)
+        public async Task<IActionResult> Edit(int id, [Bind("InventoryId,ItemToAdd")] InventoryModel inventoryModel)
         {
             if (id != inventoryModel.InventoryId)
             {
@@ -114,9 +115,12 @@ namespace Vertice.Controllers
 
             if (ModelState.IsValid)
             {
+                var existing = _context.InventoryModel.FirstOrDefault(m => m.InventoryId == id);
+                existing.Items.Add(inventoryModel.ItemToAdd);
+
                 try
                 {
-                    _context.Update(inventoryModel);
+                    _context.Update(existing);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
