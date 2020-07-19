@@ -10,7 +10,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
-    <NoWarn>1701;1702</NoWarn>
+    <NoWarn>1701;1702;1573;1591;1712</NoWarn>
   </PropertyGroup>
   
   <ItemGroup>

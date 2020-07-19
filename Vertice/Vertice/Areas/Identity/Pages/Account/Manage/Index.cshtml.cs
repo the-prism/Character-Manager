@@ -76,6 +76,13 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.DisplayName != user.DisplayName)
+            {
+                user.DisplayName = Input.DisplayName;
+            }
+
+            await _userManager.UpdateAsync(user);
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
@@ -90,12 +97,15 @@ namespace Vertice.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                DisplayName = user.DisplayName,
                 PhoneNumber = phoneNumber,
             };
         }
 
         public class InputModel
         {
+            public string DisplayName { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
