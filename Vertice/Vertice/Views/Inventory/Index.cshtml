@@ -4,32 +4,27 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Character Inventories</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Character)
-            </th>
-            <th></th>
+    <thead class="thead-dark">
+        <tr class="d-flex">
+            <th class="col-6">@Html.DisplayNameFor(model => model.Character)</th>
+            <th class="col-2">@Html.DisplayNameFor(model => model.TotalValue)</th>
+            <th class="col-4">Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Character.CharacterName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InventoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InventoryId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="d-flex">
+                <td class="col-6">@Html.DisplayFor(modelItem => item.Character.CharacterName)</td>
+                <td class="col-2">@Html.DisplayFor(modelItem => item.TotalValue)</td>
+                <td class="col-4">
+                    <a asp-action="Edit" asp-route-id="@item.InventoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.InventoryId">View</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

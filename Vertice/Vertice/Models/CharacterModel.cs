@@ -28,6 +28,8 @@ namespace Vertice.Models
 
         public string CharacterName { get; set; }
 
+        public string Permission { get; set; }
+
         public Attributes MainAttributes { get; set; }
 
         public InventoryModel Inventory { get; set; }

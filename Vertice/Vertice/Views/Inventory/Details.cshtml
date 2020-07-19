@@ -4,19 +4,31 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.Character.CharacterName)</h1>
 
 <div>
-    <h4>InventoryModel</h4>
+    <h4>Inventory</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Character)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Character)
-        </dd>
-    </dl>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr class="d-flex">
+                <th scope="col" class="col-8">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+                <th scope="col" class="col-2">@Html.DisplayNameFor(model => model.Items[0].Value)</th>
+                <th scope="col" class="col-2">@Html.DisplayNameFor(model => model.Items[0].Weight)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr class="d-flex">
+                    <td class="col-8">@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td class="col-2">@Html.DisplayFor(modelItem => item.Value)</td>
+                    <td class="col-2">@Html.DisplayFor(modelItem => item.Weight)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.InventoryId">Edit</a> |

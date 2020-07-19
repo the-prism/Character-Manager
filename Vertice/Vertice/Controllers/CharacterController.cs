@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Vertice.Areas.Identity.Data;
 using Vertice.Data;
+using Vertice.Extensions;
 using Vertice.Models;
 
 namespace Vertice
@@ -33,7 +34,16 @@ namespace Vertice
         // GET: Character
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CharacterModel.ToListAsync());
+            if (User.Identity.GetRole() == "admin")
+            {
+                return View(await _context.CharacterModel.ToListAsync());
+            }
+            else
+            {
+                var verticeUser = await _userManager.GetUserAsync(User);
+                var userId = await _userManager.GetUserIdAsync(verticeUser);
+                return View(await _context.CharacterModel.Where(m => m.OwnerID == userId || m.Permission.ToLower() == "public").ToListAsync());
+            }
         }
 
         // GET: Character/Details/5
@@ -67,7 +77,7 @@ namespace Vertice
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CharacterId,CharacterName,MainAttributes")] CharacterModel characterModel)
+        public async Task<IActionResult> Create([Bind("CharacterId,CharacterName,MainAttributes,Permission")] CharacterModel characterModel)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +127,13 @@ namespace Vertice
             {
                 try
                 {
-                    _context.Update(characterModel);
+                    var existing = _context.CharacterModel.FirstOrDefault(m => m.CharacterId == id);
+
+                    // Change existing stuff
+                    existing.OwnerID = characterModel.OwnerID;
+                    existing.CharacterName = characterModel.CharacterName;
+
+                    _context.Update(existing);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -163,6 +179,14 @@ namespace Vertice
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var characterModel = await _context.CharacterModel.FindAsync(id);
+            var inventoryModel = await _context.InventoryModel.Include(m => m.Items).FirstOrDefaultAsync(m => m.CharacterId == characterModel.CharacterId);
+
+            foreach (var item in inventoryModel.Items)
+            {
+                _context.ItemModel.Remove(item);
+            }
+
+            _context.InventoryModel.Remove(inventoryModel);
             _context.CharacterModel.Remove(characterModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

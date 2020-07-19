@@ -28,7 +28,20 @@ namespace Vertice.Models
         public double TotalWeight { get; set; }
 
         [NotMapped]
-        public int TotalValue { get; set; }
+        [Display(Name = "Total Value")]
+        public int TotalValue
+        {
+            get
+            {
+                int totalValue = 0;
+                foreach (var item in this.Items)
+                {
+                    totalValue += item.Value;
+                }
+
+                return totalValue;
+            }
+        }
 
         public int CharacterId { get; set; }
 

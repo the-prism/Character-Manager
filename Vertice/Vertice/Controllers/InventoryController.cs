@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Vertice.Areas.Identity.Data;
 using Vertice.Data;
+using Vertice.Extensions;
 using Vertice.Models;
 
 namespace Vertice.Controllers
@@ -33,7 +34,18 @@ namespace Vertice.Controllers
         // GET: InventoryModels
         public async Task<IActionResult> Index()
         {
-            var inventories = await _context.InventoryModel.Include(m => m.Character).Include(n => n.Items).ToListAsync();
+            List<InventoryModel> inventories;
+            if (User.Identity.GetRole() == "admin")
+            {
+                inventories = await _context.InventoryModel.Include(n => n.Items).ToListAsync();
+            }
+            else
+            {
+                var verticeUser = await _userManager.GetUserAsync(User);
+                var userId = await _userManager.GetUserIdAsync(verticeUser);
+                inventories = await _context.InventoryModel.Include(n => n.Items).Include(n => n.Character).Where(m => m.Character.OwnerID == userId).ToListAsync();
+            }
+
             foreach (var item in inventories)
             {
                 item.Character = await _context.CharacterModel.FirstOrDefaultAsync(q => q.CharacterId == item.CharacterId);
@@ -53,6 +65,9 @@ namespace Vertice.Controllers
             var inventoryModel = await _context.InventoryModel
                 .Include(n => n.Items)
                 .FirstOrDefaultAsync(m => m.InventoryId == id);
+
+            inventoryModel.Character = await _context.CharacterModel.FirstOrDefaultAsync(m => m.CharacterId == inventoryModel.CharacterId);
+
             if (inventoryModel == null)
             {
                 return NotFound();
