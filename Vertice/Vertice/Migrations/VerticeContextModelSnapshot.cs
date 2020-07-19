@@ -220,6 +220,9 @@ namespace Vertice.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Charisma")
                         .HasColumnType("INTEGER");
 

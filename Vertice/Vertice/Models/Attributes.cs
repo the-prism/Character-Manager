@@ -15,8 +15,10 @@ namespace Vertice.Models
     public class Attributes
     {
         [Key]
-        [ForeignKey("CharacterId")]
         public int AttributeId { get; set; }
+
+        [ForeignKey("CharacterId")]
+        public int CharacterId { get; set; }
 
         public int Strength { get; set; }
 

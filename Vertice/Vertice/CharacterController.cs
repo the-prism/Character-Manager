@@ -45,11 +45,8 @@ namespace Vertice
             }
 
             var characterModel = await _context.CharacterModel
+                .Include(m => m.MainAttributes)
                 .FirstOrDefaultAsync(m => m.CharacterId == id);
-
-            // Need to fetch from the sub tables
-            characterModel.MainAttributes = await _context.AttributeModel
-                .FirstOrDefaultAsync(m => m.AttributeId == characterModel.CharacterId);
 
             if (characterModel == null)
             {
@@ -66,7 +63,7 @@ namespace Vertice
         }
 
         // POST: Character/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -103,7 +100,7 @@ namespace Vertice
         }
 
         // POST: Character/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

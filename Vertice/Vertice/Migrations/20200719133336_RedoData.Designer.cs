@@ -9,8 +9,8 @@ using Vertice.Data;
 namespace Vertice.Migrations
 {
     [DbContext(typeof(VerticeContext))]
-    [Migration("20200718185625_CreateIdentity")]
-    partial class CreateIdentity
+    [Migration("20200719133336_RedoData")]
+    partial class RedoData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,12 +93,10 @@ namespace Vertice.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("TEXT");
@@ -135,12 +133,10 @@ namespace Vertice.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(128);
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
@@ -170,6 +166,9 @@ namespace Vertice.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsAdmin")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
@@ -215,6 +214,60 @@ namespace Vertice.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Vertice.Models.Attributes", b =>
+                {
+                    b.Property<int>("AttributeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Charisma")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Constitution")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Dexterity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Intelligence")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Strength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Wisdom")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("AttributeId");
+
+                    b.ToTable("AttributeModel");
+                });
+
+            modelBuilder.Entity("Vertice.Models.CharacterModel", b =>
+                {
+                    b.Property<int>("CharacterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CharacterName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("MainAttributesAttributeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("OwnerID")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CharacterId");
+
+                    b.HasIndex("MainAttributesAttributeId");
+
+                    b.ToTable("CharacterModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -266,6 +319,13 @@ namespace Vertice.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Vertice.Models.CharacterModel", b =>
+                {
+                    b.HasOne("Vertice.Models.Attributes", "MainAttributes")
+                        .WithMany()
+                        .HasForeignKey("MainAttributesAttributeId");
                 });
 #pragma warning restore 612, 618
         }
