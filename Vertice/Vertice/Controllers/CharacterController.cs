@@ -84,7 +84,7 @@ namespace Vertice
                 var verticeUser = await _userManager.GetUserAsync(User);
                 characterModel.OwnerID = await _userManager.GetUserIdAsync(verticeUser);
 
-                characterModel.Inventory.Items.Add(new ItemModel() { Name = "test", Weight = 2.1, Value = 30, });
+                characterModel.Inventory.Items.Add(new ItemModel() { Name = "First", Weight = 2.1, Value = 30, });
 
                 _context.Add(characterModel);
                 await _context.SaveChangesAsync();

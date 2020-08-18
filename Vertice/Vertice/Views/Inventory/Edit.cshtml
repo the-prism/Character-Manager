@@ -4,10 +4,21 @@
     ViewData["Title"] = "Edit";
 }
 
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
 <h1>Edit</h1>
 
 <h4>InventoryModel</h4>
 <hr />
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 
 <table class="table table-hover">
     <thead class="thead-dark">
@@ -21,16 +32,16 @@
     <tbody>
         @foreach (var item in Model.Items)
         {
-        <tr class="d-flex">
-            <td class="col-6">@Html.DisplayFor(modelItem => item.Name)</td>
-            <td class="col-1">@Html.DisplayFor(modelItem => item.Value)</td>
-            <td class="col-1">@Html.DisplayFor(modelItem => item.Weight)</td>
-            <td class="col-4">
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
-            </td>
-        </tr>
+            <tr class="d-flex">
+                <td class="col-6">@Html.DisplayFor(modelItem => item.Name)</td>
+                <td class="col-1">@Html.DisplayFor(modelItem => item.Value)</td>
+                <td class="col-1">@Html.DisplayFor(modelItem => item.Weight)</td>
+                <td class="col-4">
+                    <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
+                    <a href="/Inventory/Delete/@item.ItemId?inventoryId=@Model.InventoryId">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -56,7 +67,7 @@
                 <span asp-validation-for="ItemToAdd.Value" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input @*type="submit"*@ value="Save" onclick="AddItem()" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -65,6 +76,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script src="~/js/Inventory.js"></script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

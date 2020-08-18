@@ -116,6 +116,39 @@ namespace Vertice.Controllers
             return View(inventoryModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(int id, [FromBody][Bind("Name", "Weight", "Value")] ItemModel itemModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var existing = _context.InventoryModel.Include(n => n.Items).FirstOrDefault(m => m.InventoryId == id);
+                itemModel.Inventory = id;
+                existing.Items.Add(itemModel);
+
+                try
+                {
+                    _context.Update(existing);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!InventoryModelExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return CreatedAtAction("AddItem", itemModel);
+            }
+
+            return null;
+        }
+
         // POST: InventoryModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -157,21 +190,33 @@ namespace Vertice.Controllers
         }
 
         // GET: InventoryModels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int? inventoryId)
         {
-            if (id == null)
+            if (id == null || inventoryId == null)
             {
                 return NotFound();
             }
 
             var inventoryModel = await _context.InventoryModel
-                .FirstOrDefaultAsync(m => m.InventoryId == id);
+                .Include(n => n.Items)
+                .FirstOrDefaultAsync(m => m.InventoryId == inventoryId);
             if (inventoryModel == null)
             {
                 return NotFound();
             }
 
-            return View(inventoryModel);
+            var itemToRemove = inventoryModel.Items.Find(m => m.ItemId == id);
+            if (itemToRemove == null)
+            {
+                return NotFound();
+            }
+
+            inventoryModel.Items.Remove(itemToRemove);
+
+            _context.Update(inventoryModel);
+            await _context.SaveChangesAsync();
+
+            return View("Edit", inventoryModel);
         }
 
         // POST: InventoryModels/Delete/5
